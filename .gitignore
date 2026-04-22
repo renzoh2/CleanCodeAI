@@ -1,0 +1,4 @@
+frontend/app/.react-router/types
+.dockerignore
+dockerfile
+node_modules
