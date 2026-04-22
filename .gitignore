@@ -1,4 +1,4 @@
-frontend/app/.react-router/types
+/frontend/.react-router/types
 .dockerignore
 dockerfile
 node_modules
@@ -8,5 +8,5 @@ package-lock.json
 /node_modules/
 
 # React Router
-/.react-router/
-/build/
+**/.react-router/
+*/build/
