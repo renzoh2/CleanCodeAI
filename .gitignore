@@ -2,3 +2,4 @@ frontend/app/.react-router/types
 .dockerignore
 dockerfile
 node_modules
+.package-lock.json
