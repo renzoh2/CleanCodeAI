@@ -1,6 +1,6 @@
 import type { Route } from "./+types/login";
 
-export function meta(){
+export function meta({}: Route.MetaArgs){
     return [
         {
             title: "Clean Code AI"
