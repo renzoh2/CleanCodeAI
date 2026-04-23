@@ -51,11 +51,11 @@ const Login = () => {
                     <fieldset className="grid gap-2">
                         <fieldset className="grid border rounded-lg border-gray-500 hover:border-black focus:border-black">
                             <label className="font-bold text-xs pt-1 px-1" htmlFor="login_email">Email Address</label>
-                            <input className="outline-none px-1 pb-1 autofill:shadow-[inset_0_0_0px_1000px_#ffffff] autofill:rounded-lg autofill:text-black" type="text" id="login_email" name="login_email" onChange={onChangeEmail} />
+                            <input className="outline-none px-1 pb-1 autofill:rounded-lg" type="text" id="login_email" name="login_email" onChange={onChangeEmail} />
                         </fieldset>
                         <fieldset className="grid border rounded-lg border-gray-500 hover:border-black focus:border-black">
                              <label className="font-bold text-xs pt-1 px-1" htmlFor="login_password">Password</label>
-                              <input className="outline-none px-1 pb-1" type="password" id="login_password" name="login_password" onChange={onChangePassword} />
+                              <input className="outline-none px-1 pb-1 autofill:rounded-lg" type="password" id="login_password" name="login_password" onChange={onChangePassword} />
                         </fieldset>
                     </fieldset>
                     <fieldset>
