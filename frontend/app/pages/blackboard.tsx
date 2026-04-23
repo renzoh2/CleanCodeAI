@@ -1,21 +1,21 @@
 import type { Route } from "./+types/blackboard";
 
-export function meta(){
+export function meta({}: Route.MetaArgs){
     return [
         {
             title: "Clean Code AI - Blackboard"
         },
         {
             name: "description",
-            content: "Still a project",
+            content: "The Blackboard for Clean Code AI",
         }
     ]
 }
 
-function blackboard() {
+const Blackboard = () => {
     return (
         <>Blackboard Page</>
     )
 }
 
-export default blackboard
+export default Blackboard;
