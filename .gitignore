@@ -10,3 +10,6 @@ package-lock.json
 # React Router
 **/.react-router/
 */build/
+
+# Python 
+__pycache__
