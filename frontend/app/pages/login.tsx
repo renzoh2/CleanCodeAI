@@ -1,10 +1,9 @@
-import type { Route } from "./+types/login";
+import type { Route } from "./+types/Login";
 import { type ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router";
 
-//Import Images
-import  google  from "../assets/img/google.png";
-
+//Import Assets
+import Google from "../assets/img/google.png";
 
 export function meta({}: Route.MetaArgs){
     return [
@@ -22,14 +21,14 @@ const Login = () => {
 
     const [email, setEmail] = useState<string | undefined>();
     const [password, setPassword] = useState<string | undefined>();
-    let navigate = useNavigate();
+    const navigate = useNavigate()
 
     const handlesubmit = (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("trigger");
         console.log(email);
         console.log(password);
-        navigate("/blackboard");
+        navigate("/Blackboard")
     }
 
     const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +64,7 @@ const Login = () => {
                     <input className="text-sm font-bold bg-blue-800 focus:bg-blue-500 hover:bg-blue-500 text-white rounded-lg py-2" type="submit" value="Continue with Email" />
                 </form>
                 <button className="text-sm font-bold border rounded-lg py-2 w-full flex flex-row place-content-center gap-2 p-2 hover:cursor-pointer">
-                    <img src={google} className="w-1/8" /><span className="place-content-center">Continue with Google</span>
+                   <img src={Google} className="w-1/10" /><span className="place-content-center">Continue with Google</span>
                 </button>
             </div>
         </div>

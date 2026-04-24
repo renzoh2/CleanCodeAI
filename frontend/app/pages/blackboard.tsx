@@ -1,4 +1,5 @@
-import type { Route } from "./+types/blackboard";
+import type { Route } from "./+types/Blackboard";
+import { useNavigate } from "react-router";
 
 export function meta({}: Route.MetaArgs){
     return [
@@ -13,8 +14,13 @@ export function meta({}: Route.MetaArgs){
 }
 
 const Blackboard = () => {
+    const navigate = useNavigate();
+
     return (
-        <>Blackboard Page</>
+        <>
+        Blackboard Page
+        <button onClick={() => navigate('/')} >Go Back</button>
+        </>
     )
 }
 
