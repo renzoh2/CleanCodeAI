@@ -1,6 +1,6 @@
 /frontend/.react-router/types
 .dockerignore
-dockerfile
+Dockerfile
 node_modules
 package-lock.json
 .DS_Store
