@@ -12,7 +12,7 @@ export function meta({}: Route.MetaArgs){
         },
         {
             name: "description",
-            content: "Landing page for Clean Code AI",
+            content: "Landing page for Clean Code AI - Login",
         }
     ]
 }
