@@ -1,4 +1,4 @@
-import type { Route } from "./+types/Blackboard";
+import type { Route } from "./+types/blackboard";
 import { useNavigate } from "react-router";
 
 export function meta({}: Route.MetaArgs){
