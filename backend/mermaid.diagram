@@ -37,10 +37,11 @@ erDiagram
         timestamp created_at
         timestamp updated_at
     }
-    PROFILE_USER {
+    USER_PROFILE {
         int id
         int user_id
         int profile_id
+        timestamp created_at
     }
     CHAT_SESSION{
         int id
