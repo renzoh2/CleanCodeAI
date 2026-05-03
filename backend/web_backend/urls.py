@@ -20,7 +20,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 from graphene_django.views import GraphQLView
 
+from web_backend.system_app.schema import system_app_schema
+
 urlpatterns = [
+    path("", csrf_exempt(GraphQLView.as_view(graphiql=True))),
     path('admin/', admin.site.urls),
-    path("system-app/", csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    path("system-app/", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=system_app_schema))),
 ]

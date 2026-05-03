@@ -34,4 +34,4 @@ class Query(graphene.ObjectType):
     def resolve_all_profile_with_user_data(root, info):
         return Profile.objects.prefetch_related("profiles__user_id").all()
     
-schema = graphene.Schema(query=Query)
+system_app_schema = graphene.Schema(query=Query)
