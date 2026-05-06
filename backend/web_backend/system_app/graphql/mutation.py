@@ -4,6 +4,7 @@ from web_backend.system_app.api.login_api import LoginAPI
 from web_backend.system_app.enums import SystemEnums
 from web_backend.system_app.graphql.model_types import UserTypes
 from .base_mutation import BaseMutation
+from pydantic import ValidationError
 
 class LoginMutation(BaseMutation):
     class Arguments:
@@ -16,10 +17,13 @@ class LoginMutation(BaseMutation):
         try:
             service = SystemAppService.login(LoginAPI(email=email, password=password))
            
-            if type(service) is not tuple:
-                return LoginMutation(code=service, message="Login Failed")
+            if type(service) is not dict:
+                return LoginMutation(code=service["status"], message=service["message"])
             
-            return LoginMutation(user=str(service[1]), code=service[0], message="Login Success")
+            return LoginMutation(user=service["data"], code=service["status"], message=service["message"])
+        except ValidationError as e:
+            code = str(e.errors()[0]["ctx"].get("error")) #Get Error Code from Pydantic Raise Value Error
+            return LoginMutation(code=code,message="Invalid Data")
         except Exception as e:
             return LoginMutation(code=SystemEnums.SYSTEM_ERROR, message=e)
 

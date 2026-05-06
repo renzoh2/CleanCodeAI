@@ -9,10 +9,11 @@ class SystemAppService:
     def login(request: LoginAPI) -> dict:
 
         #Parsing Returning Data (Maybe will parse data)
-        def return_login_data(status: str, data: User | None):
+        def return_login_data(status: str, message: str, data: User | None):
             return {
                 "status": status,
-                "data": data
+                "message": message,
+                "data": data,
             }
 
         try:
@@ -20,7 +21,11 @@ class SystemAppService:
             user = User.objects.filter(email=request.email).first()
 
             if not user:
-                return return_login_data(status=SystemEnums.EMAIL_NOT_EXIST, data=None)
+                return return_login_data(
+                    status=SystemEnums.EMAIL_NOT_EXIST, 
+                    message="Email not existing to the app.", 
+                    data=None
+                )
             
             password_status = check_password(
                  password=request.password,
@@ -28,11 +33,23 @@ class SystemAppService:
             )
 
             if not password_status:
-                return return_login_data(status=SystemEnums.INVALID_PASSWORD, data=None)
+                return return_login_data(
+                    status=SystemEnums.INVALID_PASSWORD,
+                    message="Invalid Password. Please re-enter password.", 
+                    data=None
+                )
            
-            return return_login_data(status=SystemEnums.LOGIN_SUCCESS, data=user) #Return User
+            return return_login_data(
+                status=SystemEnums.LOGIN_SUCCESS,
+                message="Login Success",
+                data=user
+            ) #Return User
         except:
-            return return_login_data(status=SystemEnums.LOGIN_FAILED, data=None)
+            return return_login_data(
+                status=SystemEnums.LOGIN_FAILED,
+                message="Login Failed",
+                data=None
+            )
         
     def getMessageFromCode():
         pass

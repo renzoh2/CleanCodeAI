@@ -8,7 +8,11 @@ class LoginAPI(BaseModel):
     @model_validator(mode="before")
     def validate_fields(cls, data: Any) -> Any:
         if "email" not in data:
-            return SystemEnums.MISSING_EMAIL
+            raise ValueError(SystemEnums.MISSING_EMAIL)
+        if data["email"] == "":
+            raise ValueError(SystemEnums.MISSING_EMAIL)
         if "password" not in data:
-            return SystemEnums.MISSING_PASSWORD
+            raise ValueError(SystemEnums.MISSING_PASSWORD)
+        if data["password"] == "":
+            raise ValueError(SystemEnums.MISSING_PASSWORD)
         return data
