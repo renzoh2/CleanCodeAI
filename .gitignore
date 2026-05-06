@@ -13,3 +13,6 @@ package-lock.json
 
 # Python 
 __pycache__
+
+#Poetry
+poetry.lock

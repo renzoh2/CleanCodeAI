@@ -5,7 +5,7 @@ from web_backend.system_app.models import (
     Profile
 )
 
-from .types import (
+from .model_types import (
     UserTypes,
     ProfileTypes
 )

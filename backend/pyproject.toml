@@ -12,9 +12,13 @@ dependencies = [
     "django (>=6.0.4,<7.0.0)",
     "graphene-django (>=3.2.3,<4.0.0)",
     "python-dotenv (>=1.2.2,<2.0.0)",
-    "uuid6 (>=2025.0.1,<2026.0.0)"
+    "uuid6 (>=2025.0.1,<2026.0.0)",
+    "psycopg2 (>=2.9.12,<3.0.0)",
+    "pydantic (>=2.13.3,<3.0.0)"
 ]
 
+[tool.poetry]
+package-mode = false
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
