@@ -8,12 +8,13 @@ from pydantic import ValidationError
 
 class LoginMutation(BaseMutation):
     class Arguments:
-        email = graphene.String()
-        password = graphene.String()
+        email = graphene.String(required=False)
+        password = graphene.String(required=False)
 
     user = graphene.Field(UserTypes)
 
-    def mutate(root, info, email, password):
+    def mutate(root, info, email=None, password=None):
+        print(info)
         try:
             service = SystemAppService.login(LoginAPI(email=email, password=password))
            

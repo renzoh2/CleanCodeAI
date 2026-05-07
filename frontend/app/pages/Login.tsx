@@ -1,6 +1,12 @@
 import type { Route } from "./+types/Login";
 import { type ChangeEvent, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLoaderData } from "react-router";
+
+//Apollo Client
+import { useMutation } from "@apollo/client/react";
+
+//Apollo Queries
+import { LOGIN_ACCOUNT } from "~/apollo/auth.queries";
 
 //Import Assets
 import Google from "../assets/img/google.png";
@@ -17,26 +23,52 @@ export function meta({}: Route.MetaArgs){
     ]
 }
 
-const Login = () => {
+type AuthForm = {
+    email: string | undefined;
+    password: string | undefined;
+};
 
+const Login = () => {
     const [email, setEmail] = useState<string | undefined>();
     const [password, setPassword] = useState<string | undefined>();
-    const navigate = useNavigate()
+    const [status, setStatus] = useState<string>("");
+    const navigate = useNavigate();
 
-    const handlesubmit = (e: ChangeEvent<HTMLFormElement>) => {
+    const [opLogin, {loading}] = useMutation(LOGIN_ACCOUNT);
+    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+    const handlesubmit = async (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("trigger");
-        console.log(email);
-        console.log(password);
-        navigate("/Blackboard")
+        
+        const auth: AuthForm = {
+            email,
+            password
+        }
+
+        //Login Credentials
+        const response = await opLogin({
+            variables: auth
+        })
+
+        const code = response.data?.login?.code;
+
+        if(code != "LOGIN_SUCCESS"){
+            setStatus(response.data?.login?.message);
+            return;
+        }
+        
+        setStatus("");
+        await sleep(3000); 
+        navigate("/blackboard");
+   
     }
 
     const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value)
+        setEmail(e.target.value);
     }
 
     const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value)
+        setPassword(e.target.value);
     }
 
     return (
@@ -63,9 +95,10 @@ const Login = () => {
                     </fieldset>
                     <input className="text-sm font-bold bg-blue-800 focus:bg-blue-500 hover:bg-blue-500 text-white rounded-lg py-2" type="submit" value="Continue with Email" />
                 </form>
-                <button className="text-sm font-bold border rounded-lg py-2 w-full flex flex-row place-content-center gap-2 p-2 hover:cursor-pointer">
+                <button disabled={loading} className="text-sm font-bold border rounded-lg py-2 w-full flex flex-row place-content-center gap-2 p-2 hover:cursor-pointer">
                    <img src={Google} className="w-1/10" /><span className="place-content-center">Continue with Google</span>
                 </button>
+                <p>{status}</p>
             </div>
         </div>
         </>

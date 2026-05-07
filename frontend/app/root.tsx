@@ -1,3 +1,4 @@
+import { ApolloHydrationHelper } from "@apollo/client-integration-react-router";
 import {
   isRouteErrorResponse,
   Links,
@@ -33,7 +34,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <ApolloHydrationHelper>{children}</ApolloHydrationHelper>
         <ScrollRestoration />
         <Scripts />
       </body>

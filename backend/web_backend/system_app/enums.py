@@ -3,6 +3,7 @@ import graphene
 class SystemEnums(graphene.Enum):
     
     #Login Codes
+    EMPTY_FIELDS = "EMPTY_FIELDS"
     LOGIN_SUCCESS = "LOGIN_SUCCESS"
     EMAIL_NOT_EXIST = "EMAIL_NOT_EXIST"
     MISSING_EMAIL = "MISSING_EMAIL"
