@@ -1,6 +1,6 @@
 import graphene
 
-from web_backend.system_app.models import (
+from system_app.models import (
     User,
     Profile
 )

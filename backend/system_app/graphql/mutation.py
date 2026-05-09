@@ -1,8 +1,8 @@
 import graphene
-from web_backend.system_app.service import SystemAppService
-from web_backend.system_app.api.login_api import LoginAPI
-from web_backend.system_app.enums import SystemEnums
-from web_backend.system_app.graphql.model_types import UserTypes
+from system_app.service import SystemAppService
+from system_app.api.login_api import LoginAPI
+from system_app.enums import SystemEnums
+from system_app.graphql.model_types import UserTypes
 from .base_mutation import BaseMutation
 from pydantic import ValidationError
 

@@ -1,7 +1,7 @@
 #Project Level Schema Inheritance for GraphQL
 
 from graphene import ObjectType, Schema
-import web_backend.system_app.schema as system_app_schema
+import system_app.schema as system_app_schema
 
 class Query(
     system_app_schema.Query,
