@@ -46,7 +46,6 @@ erDiagram
     CHAT_SESSION{
         int id
         int profile_id
-        int ai_model_id
         string session_name
         timestamp created_at
     }
@@ -60,6 +59,7 @@ erDiagram
     CHAT_SESSION_MESSAGE{
         int id
         int session_id
+        int ai_model_id
         string role
         string message
         string context
