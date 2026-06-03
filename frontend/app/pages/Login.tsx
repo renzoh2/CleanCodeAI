@@ -73,11 +73,10 @@ const Login = () => {
 
     return (
         <>
-        <div className="grid grid-cols-2 h-screen place-items-center bg-palette-dark">
-            <div className="grid"><p>Write less bugs.<br />Ship with confidence.<br />Test everything.</p></div>
-            <div className="grid gap-2 place-items-center p-6 rounded-lg bg-palette-gray">
-               
-                <h3 className="font-bold">Login Your Account</h3>
+        <div className="grid grid-cols-2 h-screen place-items-center">
+                <div className="grid m-6 gap-2 p-6 place-items-center">
+                    
+                    <h3 className="font-bold">Login Your Account</h3>
                 
                 <form className="grid gap-2" onSubmit={handlesubmit}>
                     <fieldset className="grid gap-2">
@@ -100,7 +99,9 @@ const Login = () => {
                    <img src={Google} className="w-1/10" /><span className="place-content-center">Continue with Google</span>
                 </button>
                 <p>{status}</p>
-            </div>
+                </div>
+            <div className="grid"><p>Write less bugs.<br />Ship with confidence.<br />Test everything.</p></div>
+            
         </div>
         </>
     )
