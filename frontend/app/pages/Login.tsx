@@ -73,12 +73,12 @@ const Login = () => {
 
     return (
         <>
-        <div className="grid grid-cols-2 h-screen place-items-center">
-                <div className="grid m-6 gap-2 p-6 place-items-center">
+        <div className="grid grid-cols-2 h-screen">
+                <div className="grid my-60 mx-10">
                     
                     <h3 className="font-bold">Login Your Account</h3>
                 
-                <form className="grid gap-2" onSubmit={handlesubmit}>
+                <form className="grid" onSubmit={handlesubmit}>
                     <fieldset className="grid gap-2">
                         <fieldset className="grid border rounded-lg border-gray-500 hover:border-black focus:border-black">
                             <label className="font-bold text-xs pt-1 px-1" htmlFor="login_email">Email Address</label>
