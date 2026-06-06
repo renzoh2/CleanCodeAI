@@ -3,7 +3,7 @@ from django.db.models.functions import Now
 
 class User(models.Model):
     id = models.UUIDField(primary_key=True, db_default=models.Func(function='uuidv7'))
-    email = models.CharField(max_length=255)
+    email = models.CharField(max_length=255, db_index=True)
     password = models.CharField(max_length=255)
     password_hashed = models.CharField(max_length=255)
     is_active = models.BooleanField()

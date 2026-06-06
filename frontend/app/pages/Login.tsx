@@ -73,34 +73,33 @@ const Login = () => {
 
     return (
         <>
-        <div className="grid grid-cols-2 h-screen">
-                <div className="grid my-60 mx-10">
-                    
-                    <h3 className="font-bold">Login Your Account</h3>
-                
-                <form className="grid" onSubmit={handlesubmit}>
-                    <fieldset className="grid gap-2">
-                        <fieldset className="grid border rounded-lg border-gray-500 hover:border-black focus:border-black">
-                            <label className="font-bold text-xs pt-1 px-1" htmlFor="login_email">Email Address</label>
-                            <input className="outline-none px-1 pb-1 autofill:rounded-lg" type="text" id="login_email" name="login_email" onChange={onChangeEmail} />
-                        </fieldset>
-                        <fieldset className="grid border rounded-lg border-gray-500 hover:border-black focus:border-black">
-                             <label className="font-bold text-xs pt-1 px-1" htmlFor="login_password">Password</label>
-                              <input className="outline-none px-1 pb-1 autofill:rounded-lg" type="password" id="login_password" name="login_password" onChange={onChangePassword} />
-                        </fieldset>
-                    </fieldset>
-                    <fieldset>
-                        <input type="checkbox" id="remember_me"/>
-                        <label htmlFor="remember_me"> Remember me</label>
-                    </fieldset>
-                    <input className="text-sm font-bold bg-blue-800 focus:bg-blue-500 hover:bg-blue-500 text-white rounded-lg py-2" type="submit" value="Continue with Email" />
-                </form>
-                <button disabled={loading} className="text-sm font-bold border rounded-lg py-2 w-full flex flex-row place-content-center gap-2 p-2 hover:cursor-pointer">
-                   <img src={Google} className="w-1/10" /><span className="place-content-center">Continue with Google</span>
-                </button>
-                <p>{status}</p>
+        <div className="flex flex-row h-screen">
+            <div className="flex-row w-130 p-10">
+                <div className="my-10">
+                    <span className="font-bold text-2xl">
+                        Clean Code <span className="text-palette-red">AI</span>
+                    </span>
                 </div>
-            <div className="grid"><p>Write less bugs.<br />Ship with confidence.<br />Test everything.</p></div>
+                <div className="grid gap-5 border-2 my-20 border-palette-gray rounded-xl p-5">
+                    <form className="grid gap-5" onSubmit={handlesubmit}>
+                            <fieldset className="grid border rounded-lg border-gray-500">
+                                <input className="outline-none px-2 py-3 rounded-lg bg-white text-palette-dark" type="text" id="login_email" name="login_email" placeholder="Email Address" onChange={onChangeEmail} />
+                            </fieldset>
+                            <fieldset className="grid border rounded-lg border-gray-500">
+                                <input className="outline-none px-2 py-3 rounded-lg bg-white text-palette-dark" type="password" id="login_password" name="login_password" placeholder="Password" onChange={onChangePassword} />
+                            </fieldset>
+                            <input className="font-bold bg-palette-red text-white rounded-full py-3 w-full" type="submit" value="Sign in your account" />
+                    </form>
+                    <button disabled={loading} className="font-bold border rounded-full py-2 w-full flex flex-row place-content-center gap-3 p-2 hover:cursor-pointer bg-white text-palette-dark">
+                    <img src={Google} className="w-1/10" /><span className="place-content-center">Continue with Google</span>
+                    </button>
+                    {status && <p>{status}</p>}
+                </div>    
+                
+            </div>
+            <div className="flex-row grow">
+                <p>Write less bugs.<br />Ship with confidence.<br />Test everything.</p>
+            </div>
             
         </div>
         </>

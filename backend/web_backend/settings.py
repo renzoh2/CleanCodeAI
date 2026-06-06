@@ -62,9 +62,7 @@ MIDDLEWARE = [
     'web_backend.middleware.InterceptMiddleware'
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:5173",
-]
+CORS_ALLOWED_ORIGINS = os.environ.get("ALLOWED_URLS", "").split(",")
 
 ROOT_URLCONF = 'web_backend.urls'
 
