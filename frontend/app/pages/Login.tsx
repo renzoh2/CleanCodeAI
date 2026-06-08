@@ -39,28 +39,31 @@ const Login = () => {
 
     const handlesubmit = async (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+        setStatus("");
         const auth: AuthForm = {
             email,
             password
         }
+        //Login Function
+        try{ 
+            const response = await opLogin({
+                variables: auth
+            })
+            const code = response.data?.login?.code;
 
-        //Login Credentials
-        const response = await opLogin({
-            variables: auth
-        })
+            if(code != "LOGIN_SUCCESS"){
+                setStatus(response.data?.login?.message); 
+                await sleep(3000); 
+                setStatus("");
+                return;
+            }
 
-        const code = response.data?.login?.code;
-
-        if(code != "LOGIN_SUCCESS"){
-            setStatus(response.data?.login?.message);
-            return;
+            navigate("/blackboard");
+        } catch(error: unknown){
+            setStatus("System Error. Please come back later.");
+            await sleep(3000);
+            setStatus("");
         }
-        
-        setStatus("");
-        await sleep(3000); 
-        navigate("/blackboard");
-   
     }
 
     const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
@@ -74,19 +77,19 @@ const Login = () => {
     return (
         <>
         <div className="flex flex-row h-screen">
-            <div className="flex-row w-130 p-10">
-                <div className="my-10">
+            <div className="flex-row w-130 px-10">
+                <div className="">
                     <span className="font-bold text-2xl">
                         Clean Code <span className="text-palette-red">AI</span>
                     </span>
                 </div>
-                <div className="grid gap-5 border-2 my-20 border-palette-gray rounded-xl p-5">
+                <div className="grid gap-5 border-2 border-palette-gray rounded-xl p-5">
                     <form className="grid gap-5" onSubmit={handlesubmit}>
                             <fieldset className="grid border rounded-lg border-gray-500">
-                                <input className="outline-none px-2 py-3 rounded-lg bg-white text-palette-dark" type="text" id="login_email" name="login_email" placeholder="Email Address" onChange={onChangeEmail} />
+                                <input className="outline-none px-2 py-3 rounded-lg bg-white text-palette-dark placeholder:font-bold" type="text" id="login_email" name="login_email" placeholder="Email Address" onChange={onChangeEmail} />
                             </fieldset>
                             <fieldset className="grid border rounded-lg border-gray-500">
-                                <input className="outline-none px-2 py-3 rounded-lg bg-white text-palette-dark" type="password" id="login_password" name="login_password" placeholder="Password" onChange={onChangePassword} />
+                                <input className="outline-none px-2 py-3 rounded-lg bg-white text-palette-dark placeholder:font-bold" type="password" id="login_password" name="login_password" placeholder="Password" onChange={onChangePassword} />
                             </fieldset>
                             <input className="font-bold bg-palette-red text-white rounded-full py-3 w-full" type="submit" value="Sign in your account" />
                     </form>
@@ -95,10 +98,16 @@ const Login = () => {
                     </button>
                     {status && <p>{status}</p>}
                 </div>    
-                
             </div>
-            <div className="flex-row grow">
-                <p>Write less bugs.<br />Ship with confidence.<br />Test everything.</p>
+            <div className="flex-row grow place-content-center">
+                <div className="">
+                    <p>
+                        Write less bugs.<br />
+                        Ship with confidence.<br />
+                        Test everything.
+                    </p>
+                </div>
+               
             </div>
             
         </div>
