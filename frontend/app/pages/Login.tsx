@@ -12,7 +12,7 @@ import { LOGIN_ACCOUNT } from "~/apollo/auth.queries";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 //Import Assets
-import Google from "../assets/img/google.png";
+import imgGoogle from "../assets/img/google.png";
 
 
 export function meta({}: Route.MetaArgs){
@@ -88,7 +88,7 @@ const Login = () => {
                                 <div className="grid gap-5">
                                     <input className="font-bold bg-palette-red text-white rounded-full py-4 w-full text-lg" type="submit" value="Sign in your account" />
                                     <button disabled={loading} className="font-bold border rounded-full py-4 w-full flex flex-row place-content-center gap-3 p-2 hover:cursor-pointer bg-white text-palette-dark">
-                                    <img src={Google} className="w-1/15" /><span className="place-content-center text-lg">Continue with Google</span>
+                                    <img src={imgGoogle} className="w-1/15" /><span className="place-content-center text-lg">Continue with Google</span>
                                     </button>
                                 </div>
                             </form>

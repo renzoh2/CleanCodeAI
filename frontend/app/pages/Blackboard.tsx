@@ -1,6 +1,7 @@
 import type { Route } from "./+types/Blackboard";
 import { useNavigate } from "react-router";
-import  SideBar from "../component/SideBar"
+import  SideBar from "../component/SideBar";
+import ChatBox from "../component/ChatBox";
 
 export function meta({}: Route.MetaArgs){
     return [
@@ -19,11 +20,9 @@ const Blackboard = () => {
 
     return (
         <>
-        <div>
-            <SideBar/>
-            <div>
-                Blackboard Page
-            </div>
+        <div className="flex flex-row h-screen w-screen">
+            <SideBar />
+            <ChatBox />
         </div>
        
         </>
