@@ -1,8 +1,8 @@
 import graphene
-from ..service import SystemAppService
-from ..api.login_api import LoginAPI
-from ..utils import AppCodes, ResponseRegistry
-from ..graphql.model_types import UserTypes
+from ...service import SystemAppService
+from ...api.login_api import LoginAPI
+from ...utils import AppCodes, ResponseRegistry
+from ...graphql.model_types import UserTypes
 from pydantic import ValidationError
 from graphene.types.generic import GenericScalar
 
@@ -18,11 +18,9 @@ class LoginMutation(graphene.Mutation):
 
     def mutate(root, info, email=None, password=None):
         registry = ResponseRegistry()
-        app_service = SystemAppService()
         try:
-      
-            service = app_service.login(LoginAPI(email=email, password=password))
-   
+            service = SystemAppService.login(LoginAPI(email=email, password=password))
+            
             if type(service) is not dict:
                 return LoginMutation(
                     **registry.to_response(
@@ -48,24 +46,3 @@ class LoginMutation(graphene.Mutation):
                     data=e.__dict__
                 )
             )
-
-class DummyMutation(graphene.Mutation):
-    ok = graphene.Boolean()
-
-    def mutate(root, info):
-        return DummyMutation(ok=True)
-    
-class GeneratePasswordHashedMutation(graphene.Mutation):
-    class Arguments:
-        password = graphene.String()
-
-    hashed = graphene.String()
-
-    def mutate(root, info, password):
-        hashed = SystemAppService.generateHashed(password=password)
-        return GeneratePasswordHashedMutation(hashed = hashed)
-    
-class SystemAppMutation(graphene.ObjectType):
-    dummy = DummyMutation.Field()
-    generate = GeneratePasswordHashedMutation.Field()
-    login = LoginMutation.Field()

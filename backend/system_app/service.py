@@ -1,30 +1,27 @@
 from .models import User
 from .api.login_api import LoginAPI
 from django.contrib.auth.hashers import make_password, check_password
-from .enums import SystemEnums
+from django.forms.models import model_to_dict
+from .utils.functions import dict_format
+#Utilities
+from .utils import AppCodes, ResponseRegistry
 
 class SystemAppService:
 
-    #Logging In
-    def login(request: LoginAPI) -> dict:
+    def __init__(self):
+        self.response_registry = ResponseRegistry()
 
-        #Parsing Returning Data (Maybe will parse data)
-        def return_login_data(status: str, message: str, data: User | None):
-            return {
-                "status": status,
-                "message": message,
-                "data": data,
-            }
+    #Logging In
+    def login(self, request: LoginAPI) -> dict:
 
         try:
             #Email Validation
             user = User.objects.filter(email=request.email).first()
-
+           
             if not user:
-                return return_login_data(
-                    status=SystemEnums.EMAIL_NOT_EXIST, 
-                    message="Email not existing to the app.", 
-                    data=None
+                return self.response_registry.to_response(
+                    code=AppCodes.EMAIL_NOT_EXIST, 
+                    status=False
                 )
             
             password_status = check_password(
@@ -33,22 +30,23 @@ class SystemAppService:
             )
 
             if not password_status:
-                return return_login_data(
-                    status=SystemEnums.INVALID_PASSWORD,
-                    message="Invalid Password. Please re-enter password.", 
-                    data=None
+                return self.response_registry.to_response(
+                    code=AppCodes.INVALID_PASSWORD,
+                    status=False
+            )
+            
+            return self.response_registry.to_response(
+                code=AppCodes.LOGIN_SUCCESS,
+                status=True,
+                data=dict_format(
+                    model_to_dict(user)
                 )
-           
-            return return_login_data(
-                status=SystemEnums.LOGIN_SUCCESS,
-                message="Login Success",
-                data=user
-            ) #Return User
+            )
+            
         except:
-            return return_login_data(
-                status=SystemEnums.LOGIN_FAILED,
-                message="Login Failed",
-                data=None
+            return self.response_registry.to_response(
+                code=AppCodes.LOGIN_FAILED,
+                status=False
             )
         
     def getMessageFromCode():

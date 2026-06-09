@@ -1,10 +1,10 @@
 import graphene
 
-class SystemEnums(graphene.Enum):
+class AppCodes(graphene.Enum):
     
     #Login Codes
-    EMPTY_FIELDS = "EMPTY_FIELDS"
     LOGIN_SUCCESS = "LOGIN_SUCCESS"
+    EMPTY_FIELDS = "EMPTY_FIELDS"
     EMAIL_NOT_EXIST = "EMAIL_NOT_EXIST"
     MISSING_EMAIL = "MISSING_EMAIL"
     MISSING_PASSWORD = "MISSING_PASSWORD"
