@@ -25,7 +25,7 @@ const ChatBalloon = (data: ChatBalloonInterface) => {
 
     return (
         <>
-            <div>
+            <div className="text-sm">
                 <div>
                     {message}
                 </div>

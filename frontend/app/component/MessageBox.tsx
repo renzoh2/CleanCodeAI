@@ -1,17 +1,17 @@
 
 import Conversation from "./Conversation";
 import ChatArea from "./ChatArea";
+import NavBar from "./NavBar";
 
 const MessageBox = () => {
-
     return (
         <>
             <div className="flex grow">
                 <div className="flex flex-col w-full">
                     <div className="py-5 px-10">
-                        NAVBAR HERE
+                        <NavBar />
                     </div>
-                    <div className="flex h-screen mx-50 relative overflow-hidden">
+                    <div className="flex h-screen mx-40 relative overflow-hidden">
                         <div className="flex-6 overflow-y-auto scroll-smooth mb-20 p-5">
                             <Conversation />
                         </div>

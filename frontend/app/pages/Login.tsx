@@ -65,7 +65,7 @@ const Login = () => {
         }
     }
 
-    return 
+    return (
         <>
         <div className="h-screen">
             <div className="flex flex-row h-5/6">
@@ -133,7 +133,7 @@ const Login = () => {
         </div>
         
         </>
-    
+    );
 }
 
 export default Login;
