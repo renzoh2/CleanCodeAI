@@ -12,7 +12,7 @@ const MessageBox = () => {
                         NAVBAR HERE
                     </div>
                     <div className="flex h-screen mx-50 relative overflow-hidden">
-                        <div className="flex-6 overflow-auto mb-20 p-5">
+                        <div className="flex-6 overflow-y-auto scroll-smooth mb-20 p-5">
                             <Conversation />
                         </div>
                         <div className="absolute w-full bottom-5 p-2 bg-palette-white text-palette-dark rounded-2xl  ">
