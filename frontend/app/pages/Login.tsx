@@ -1,5 +1,5 @@
 import type { Route } from "./+types/Login";
-import { type ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 //Apollo Client
@@ -12,7 +12,7 @@ import { LOGIN_ACCOUNT } from "~/apollo/auth.queries";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 //Import Assets
-import imgGoogle from "../assets/img/google.png";
+import imgGoogle from "/img/google.png";
 
 
 export function meta({}: Route.MetaArgs){
@@ -65,7 +65,7 @@ const Login = () => {
         }
     }
 
-    return (
+    return 
         <>
         <div className="h-screen">
             <div className="flex flex-row h-5/6">
@@ -133,7 +133,7 @@ const Login = () => {
         </div>
         
         </>
-    )
+    
 }
 
 export default Login;

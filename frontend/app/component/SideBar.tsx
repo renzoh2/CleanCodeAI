@@ -1,7 +1,7 @@
-import { type ChangeEvent, useState } from "react";
-import imgBubbleChat from "../assets/img/bubble-chat.png";
-import imgCode from "../assets/img/code.png";
-import imgNewMessage from "../assets/img/new-message.png";
+
+import imgBubbleChat from "/img/bubble-chat.png";
+import imgCode from "/img/code.png";
+import imgNewMessage from "/img/new-message.png";
 
 const SideBar = () => {
 
