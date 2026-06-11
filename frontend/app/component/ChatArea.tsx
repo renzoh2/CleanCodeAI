@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, type ChangeEvent, type MouseEvent} from "react";
+import { useState, useEffect, type ChangeEvent, type KeyboardEvent} from "react";
 
 import ButtonSend from "/img/send.png";
 import ButtonSendHover from "/img/send-hover.png";
@@ -13,7 +13,6 @@ const ChatArea = () => {
     
     const [chatmessage, setChatMessage] = useState<string>("");
     const [isHover, setIsHover] = useState(false);
-    const [mounted, setMounted] = useState(false);
 
     const [greetingMessage, setGreetingMessage] = useState<string>(greeting[0]);
 
@@ -21,46 +20,38 @@ const ChatArea = () => {
         setGreetingMessage(greeting[Math.floor(Math.random() * greeting.length)]);
     }, []);
 
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
     const chat = useChatStore();
 
-    const textAreaRef = useRef<HTMLTextAreaElement>(null);
+    const submitMessage = () => {
+        if (!chatmessage.trim()) return;
+        chat.addMessage(chatmessage.trim());
+        setChatMessage("");
+    };
 
-
-    const textAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setChatMessage(e.target.value);
-    }
-
-    const handleOperation = (e: MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        chat.addMessage(chatmessage);
-        setChatMessage('');
-        if(textAreaRef.current){
-            textAreaRef.current.value = "";
+    const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            submitMessage();
         }
-    }
+    };
 
     return (<>
         <div className="flex">
             <textarea
                 name="chatMessage"
-                ref={textAreaRef}
+                value={chatmessage}
                 className="grow field-sizing-content resize-none max-h-[5lh] outline-0 p-2"
-                onChange={textAreaChange}
+                onChange={(e:ChangeEvent<HTMLTextAreaElement>) => {setChatMessage(e.target.value)}}
+                onKeyDown={handleKeyDown}
                 placeholder={greetingMessage}
             />
             <button 
                 className="pr-2 h-10 self-end" 
                 onMouseEnter={()=>{setIsHover(true)}} 
                 onMouseLeave={()=>{setIsHover(false)}}
-                onClick={handleOperation}
+                onClick={submitMessage}
             >
-                {mounted && (
-                    <img src={isHover ? ButtonSendHover : ButtonSend} className="w-7" />
-                )}
+                <img src={isHover ? ButtonSendHover : ButtonSend} className="w-7" alt="Send" />
             </button>
         </div>
     </>);
