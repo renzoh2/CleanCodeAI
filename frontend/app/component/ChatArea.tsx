@@ -24,7 +24,24 @@ const ChatArea = () => {
 
     const submitMessage = () => {
         if (!chatmessage.trim()) return;
-        chat.addMessage(chatmessage.trim());
+        chat.addContent({
+            role: "USER",
+            content: [
+                {
+                    iteration: 0,
+                    text: chatmessage.trim()
+                }
+            ]
+        });
+        chat.addContent({
+            role: "SYSTEM",
+            content: [
+                {
+                    iteration: 0,
+                    text: "TESTING"
+                }
+            ]
+        });
         setChatMessage("");
     };
 
@@ -40,7 +57,7 @@ const ChatArea = () => {
             <textarea
                 name="chatMessage"
                 value={chatmessage}
-                className="grow field-sizing-content resize-none max-h-[5lh] outline-0 p-2"
+                className="grow field-sizing-content resize-none max-h-[5lh] w-full outline-0 p-2"
                 onChange={(e:ChangeEvent<HTMLTextAreaElement>) => {setChatMessage(e.target.value)}}
                 onKeyDown={handleKeyDown}
                 placeholder={greetingMessage}

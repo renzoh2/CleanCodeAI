@@ -11,11 +11,11 @@ const MessageBox = () => {
                     <div className="py-5 px-10">
                         NAVBAR HERE
                     </div>
-                    <div className="flex h-dvh mx-50 relative">
-                        <div className="flex-6">
+                    <div className="flex h-screen mx-50 relative overflow-hidden">
+                        <div className="flex-6 overflow-auto mb-20 p-5">
                             <Conversation />
                         </div>
-                        <div className="absolute w-full bottom-15 p-2 bg-white text-palette-dark rounded-2xl  ">
+                        <div className="absolute w-full bottom-5 p-2 bg-palette-white text-palette-dark rounded-2xl  ">
                             <ChatArea />
                         </div> 
                     </div>

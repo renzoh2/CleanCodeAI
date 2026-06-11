@@ -1,14 +1,25 @@
 //State Manager
 import { create  } from 'zustand'
 
+
+interface MessageIterationInterface {
+    iteration: number;
+    text: string;
+}
+
+interface MessageContentInterface {
+    role: string;
+    message: MessageIterationInterface[];
+}
+
 interface ChatStoreInterface {
-    messages: string[];
-    addMessage: (newMessage: string) => void;
+    contents: MessageContentInterface[];
+    addContent: (newContent: MessageContentInterface) => void;
 }
 
 const useChatStore = create<ChatStoreInterface>((set) => ({
-    messages: [],
-    addMessage: (newMessage) => set((state) => ({messages: [...state.messages, newMessage]}))
+    contents: [],
+    addContent: (newContent) => set((state) => ({contents: [...state.contents, newContent]}))
 }))
 
 export default useChatStore;
