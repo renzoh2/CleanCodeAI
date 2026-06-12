@@ -29,6 +29,7 @@ const ChatArea = () => {
             content: [
                 {
                     iteration: 0,
+                    llm: undefined,
                     text: chatmessage.trim()
                 }
             ]
@@ -38,6 +39,10 @@ const ChatArea = () => {
             content: [
                 {
                     iteration: 0,
+                    llm: {
+                        model: "GG",
+                        temperature: 0.2
+                    },
                     text: "TESTING"
                 }
             ]

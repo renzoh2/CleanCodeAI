@@ -1,8 +1,14 @@
 //State Manager
 import { create  } from 'zustand'
 
+interface AIModelInterface {
+    model: string;
+    temperature: number;
+}
+
 interface MessageIterationInterface {
     iteration: number;
+    llm: AIModelInterface | undefined;
     text: string;
 }
 
