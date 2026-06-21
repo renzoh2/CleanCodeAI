@@ -43,7 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
-    'corsheaders'
+    'corsheaders',
+    'apps.userprofile',
+    'apps.organization',
+    'apps.audit',
+    'apps.authentication',
+    'apps.authorization',
+    'apps.ai_core',
+    'apps.mcp'
+
 ]
 
 GRAPHENE = {

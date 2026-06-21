@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.functions import Now
 from django.core.validators import MinValueValidator, MaxValueValidator
-from apps.profiles.models import Profile
+from apps.userprofile.models import Profile
 
 class AgentType(models.TextChoices):
     CONVERSATIONAL  = "conversational", "Conversational"
@@ -39,7 +39,10 @@ class LLMProvider(models.Model):
     display_name    = models.CharField(max_length=255)
     api_key         = models.TextField()
     base_url        = models.URLField()
-    is_active       = models.BooleanField()
+    is_active       = models.BooleanField(
+                        default=True, 
+                        db_default=True
+                    )
     created_at      = models.DateTimeField(db_default=Now())
     updated_at      = models.DateTimeField(
                         db_default=Now(), 
@@ -90,9 +93,15 @@ class Agent(models.Model):
                         default=1024, 
                         validators=[MinValueValidator(1)]
                     )
-    is_active       = models.BooleanField(default=True)
+    is_active       = models.BooleanField(
+                        default=True, 
+                        db_default=True
+                    )
     created_at      = models.DateTimeField(db_default=Now())
-    updated_at      = models.DateTimeField(auto_now=True)
+    updated_at      = models.DateTimeField(
+                        db_default=Now(),
+                        auto_now=True
+                    )
 
     class Meta:
         db_table = "Agent"
@@ -122,12 +131,15 @@ class Conversation(models.Model):
                             )
     summary_sequence_index  = models.IntegerField()
     created_at              = models.DateTimeField(db_default=Now())
-    updated_at              = models.DateTimeField(db_default=Now())
+    updated_at              = models.DateTimeField(
+                                db_default=Now(), 
+                                auto_now=True
+                            )
 
     class Meta:
         db_table = "Conversation"
 
-class ConversationSettings(models.Model):
+class ConversationSetting(models.Model):
     id              = models.UUIDField(
                         primary_key=True, 
                         db_default=models.Func(function='uuidv7')
@@ -136,7 +148,7 @@ class ConversationSettings(models.Model):
                         Conversation, 
                         db_column="conversation_id", 
                         on_delete=models.CASCADE, 
-                        related_name="conversation_settings"
+                        related_name="conversation_setting"
                     ) 
     system_prompt   = models.TextField(
                         blank=True, 
@@ -156,10 +168,13 @@ class ConversationSettings(models.Model):
                         validators=[MinValueValidator(1)]
                     )
     created_at      = models.DateTimeField(db_default=Now())
-    updated_at      = models.DateTimeField(db_default=Now())
+    updated_at      = models.DateTimeField(
+                        db_default=Now(),
+                        auto_now=True
+                    )
 
     class Meta:
-        db_table = "ConversationSettings"
+        db_table = "ConversationSetting"
         constraints = [
             models.CheckConstraint(
                 condition=models.Q(temperature__gte=0.0) & models.Q(temperature__lte=2.0),
@@ -188,12 +203,27 @@ class ConversationMessage(models.Model):
                             default=MessageType.NORMAL
                         )
     token_count         = models.IntegerField(default=0)
-    is_active_iteration = models.BooleanField(default=True, db_default=True)
-    is_visible          = models.BooleanField(default=True, db_default=True)
-    is_failed           = models.BooleanField(default=False, db_default=False)
-    is_summarized       = models.BooleanField(default=False, db_default=False)
+    is_active_iteration = models.BooleanField(
+                            default=True, 
+                            db_default=True
+                        )
+    is_visible          = models.BooleanField(
+                            default=True, 
+                            db_default=True
+                        )
+    is_failed           = models.BooleanField(
+                            default=False, 
+                            db_default=False
+                        )
+    is_summarized       = models.BooleanField(
+                            default=False, 
+                            db_default=False
+                        )
     created_at          = models.DateTimeField(db_default=Now())
-    updated_at          = models.DateTimeField(auto_now=True)
+    updated_at          = models.DateTimeField(
+                            db_default=Now(),
+                            auto_now=True
+                        )
 
     def save(self, *args, **kwargs):
         if self._state.adding:
@@ -224,30 +254,30 @@ class ConversationMessage(models.Model):
         ]
 
 class MessageAttachment(models.Model):
-    id                  = models.UUIDField(
-                            primary_key=True, 
-                            db_default=models.Func(function='uuidv7')
-                        )
-    message             = models.ForeignKey(
-                            ConversationMessage,
-                            db_column="message_id",
-                            on_delete=models.CASCADE,
-                            related_name="message_attachment",
-                        )
-    file_name         = models.CharField(max_length=255)
-    file_type         = models.CharField(max_length=100)
-    file_size_bytes   = models.BigIntegerField(default=0)
-    file_storage_link = models.TextField()
-    status            = models.CharField(
-        max_length=50,
-        choices=AttachmentStatus.choices,
-        default=AttachmentStatus.PENDING,
-    )
-    created_at        = models.DateTimeField(db_default=Now())
-    updated_at        = models.DateTimeField(auto_now=True)
+    id                      = models.UUIDField(
+                                primary_key=True, 
+                                db_default=models.Func(function='uuidv7')
+                            )
+    conversation_message    = models.ForeignKey(
+                                ConversationMessage,
+                                db_column="conversation_message_id",
+                                on_delete=models.CASCADE,
+                                related_name="message_attachment",
+                            )
+    file_name               = models.CharField(max_length=255)
+    file_type               = models.CharField(max_length=100)
+    file_size_bytes         = models.BigIntegerField(default=0)
+    file_storage_link       = models.TextField()
+    status                  = models.CharField(
+                                max_length=50,
+                                choices=AttachmentStatus.choices,
+                                default=AttachmentStatus.PENDING,
+                            )
+    created_at              = models.DateTimeField(db_default=Now())
+    updated_at              = models.DateTimeField(
+                                db_default=Now(),
+                                auto_now=True
+                            )
 
     class Meta:
         db_table = "MessageAttachments"
-        indexes  = [
-            models.Index(fields=["message"]),
-        ]

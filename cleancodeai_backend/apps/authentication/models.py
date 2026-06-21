@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.functions import Now
+from apps.userprofile.models import Profile
 
 class UserAccount(models.Model):
     id              = models.UUIDField(primary_key=True, db_default=models.Func(function='uuidv7'))
@@ -8,7 +9,39 @@ class UserAccount(models.Model):
     is_active       = models.BooleanField()
     is_locked       = models.BooleanField()
     created_at      = models.DateTimeField(db_default=Now())
-    updated_at      = models.DateTimeField(db_default=Now())
+    updated_at      = models.DateTimeField(
+                        db_default=Now(), 
+                        auto_now=True
+                    )
+
+    class Meta:
+        db_table = "UserAccount"
+
+class UserProfile(models.Model):
+    id              = models.UUIDField(
+                        primary_key=True, 
+                        db_default=models.Func(function='uuidv7')
+                    )
+    user_account    = models.ForeignKey(
+                        UserAccount, 
+                        db_column="user_account_id", 
+                        on_delete=models.RESTRICT, 
+                        related_name="user_profile"
+                    )
+    profile         = models.ForeignKey(
+                        Profile, 
+                        db_column="profile_id", 
+                        on_delete=models.RESTRICT, 
+                        related_name="user_profile"
+                    )
+    created_at      = models.DateTimeField(db_default=Now())
+    updated_at      = models.DateTimeField(
+                        db_default=Now(), 
+                        auto_now=True
+                    )
+    
+    class Meta:
+        db_table = "UserProfile"
 
 class PasswordResetRequest(models.Model):
     id              = models.UUIDField(primary_key=True, db_default=models.Func(function='uuidv7'))

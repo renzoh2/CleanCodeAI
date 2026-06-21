@@ -1,66 +1,159 @@
 from django.db import models
 from django.db.models.functions import Now
-from apps.profiles.models import Profile
 from apps.authentication.models import UserAccount
+from apps.organization.models import Organization
 
-class Roles(models.Model):
-    id          = models.UUIDField(primary_key=True, db_default=models.Func(function='uuidv7'))
+class ActionPermission(models.TextChoices):
+    CREATE = "create", "Create"
+    READ = "read", "Read"
+    UPDATE = "update", "Update"
+    DELETE = "delete", "Delete"
+    DOWNLOAD = "download", "Download"
+    UPLOAD = "upload", "Upload"
+
+class Role(models.Model):
+    id          = models.UUIDField(
+                    primary_key=True, 
+                    db_default=models.Func(function='uuidv7')
+                )
     name        = models.CharField(max_length=255)
-    is_active   = models.BooleanField()
-    created_at  = models.DateTimeField(db_default=Now())
-    updated_at  = models.DateTimeField(db_default=Now())
+    is_active   = models.BooleanField(
+                    default=True, 
+                    db_default=True
+                )
+    created_at  = models.DateTimeField(
+                    default=Now(),
+                    db_default=Now()
+                )
+    updated_at  = models.DateTimeField(
+                    db_default=Now(), 
+                    auto_now=True
+                )
+    
+    class Meta:
+        db_table = "Role"
 
-class Permissions(models.Model):
-    id          = models.UUIDField(primary_key=True, db_default=models.Func(function='uuidv7'))
+class Permission(models.Model):
+    id          = models.UUIDField(
+                    primary_key=True, 
+                    db_default=models.Func(function='uuidv7')
+                )
     name        = models.CharField(max_length=255)
     resource    = models.CharField(max_length=255)
-    action      = models.CharField(max_length=255)
-    is_active   = models.BooleanField()
+    action      = models.CharField(
+                    max_length=255, 
+                    choices=ActionPermission.choices
+                )
+    is_active   = models.BooleanField(
+                    default=True, 
+                    db_default=True
+                )
     created_at  = models.DateTimeField(db_default=Now())
-    updated_at  = models.DateTimeField(db_default=Now())
+    updated_at  = models.DateTimeField(
+                    db_default=Now(), 
+                    auto_now=True
+                )
+    
+    class Meta:
+        db_table = "Permission"
 
-class RolePermissions(models.Model):
-    id          = models.UUIDField(primary_key=True, db_default=models.Func(function='uuidv7'))
-    role        = models.ForeignKey(Roles, db_column="role_id", on_delete=models.RESTRICT, related_name="role_permissions")
-    permission  = models.ForeignKey(Permissions, db_column="permission_id", on_delete=models.RESTRICT, related_name="role_permissions")
-    effect      = models.CharField(max_length=255) 
-    is_active   = models.BooleanField()
-    created_at  = models.DateTimeField(db_default=Now())
-    updated_at  = models.DateTimeField(db_default=Now())
+class RolePermission(models.Model):
+    id          = models.UUIDField(
+                    primary_key=True, 
+                    db_default=models.Func(function='uuidv7')
+                )
+    role        = models.ForeignKey(
+                    Role, 
+                    db_column="role_id", 
+                    on_delete=models.RESTRICT, 
+                    related_name="role_permission"
+                )
+    permission  = models.ForeignKey(
+                    Permission, 
+                    db_column="permission_id", 
+                    on_delete=models.RESTRICT, 
+                    related_name="role_permission"
+                )
+    is_active   = models.BooleanField(
+                    default=True, 
+                    db_default=True
+                )
+    created_at  = models.DateTimeField(
+                    default=Now(),
+                    db_default=Now()
+                )
+    updated_at  = models.DateTimeField(
+                    db_default=Now(), 
+                    auto_now=True
+                )
+    
+    class Meta:
+        db_table = "RolePermission"
 
-class UserProfile(models.Model):
-    id              = models.UUIDField(primary_key=True, db_default=models.Func(function='uuidv7'))
-    user_account    = models.ForeignKey(UserAccount, db_column="user_account_id", on_delete=models.RESTRICT, related_name="user_profile")
-    profile         = models.ForeignKey(Profile, db_column="profile_id", on_delete=models.RESTRICT, related_name="user_profile")
-    created_at      = models.DateTimeField(db_default=Now())
-    updated_at      = models.DateTimeField(db_default=Now())
 
-class Organization(models.Model):
-    id          = models.UUIDField(primary_key=True, db_default=models.Func(function='uuidv7'))
-    name        = models.CharField(max_length=255)
-    is_active   = models.BooleanField()
-    created_at  = models.DateTimeField(db_default=Now())
-    updated_at  = models.DateTimeField(db_default=Now())
 
-class UserOrganization(models.Model):
-    id              = models.UUIDField(primary_key=True, db_default=models.Func(function='uuidv7'))
-    user_account    = models.ForeignKey(UserAccount, db_column="user_account_id", on_delete=models.RESTRICT, related_name="user_organization")
-    organization    = models.ForeignKey(Organization, db_column="organization_id", on_delete=models.RESTRICT, related_name="user_organization")
-    created_at      = models.DateTimeField(db_default=Now())
-    updated_at      = models.DateTimeField(db_default=Now())
+class UserRole(models.Model):
+    id              = models.UUIDField(
+                        primary_key=True, 
+                        db_default=models.Func(function='uuidv7')
+                    )
+    user_account    = models.ForeignKey(
+                        UserAccount, 
+                        db_column="user_account_id", 
+                        on_delete=models.RESTRICT, 
+                        related_name="user_role"
+                    )
+    role            = models.ForeignKey(
+                        Role, 
+                        db_column="role_id", 
+                        on_delete=models.RESTRICT, 
+                        related_name="user_role"
+                    )
+    is_active       = models.BooleanField(
+                        default=True, 
+                        db_default=True
+                    )
+    created_at      = models.DateTimeField(
+                        default=Now(),
+                        db_default=Now()
+                    )
+    updated_at      = models.DateTimeField(
+                        db_default=Now(), 
+                        auto_now=True
+                    )
+    
+    class Meta:
+        db_table = "UserRole"
 
-class UserPermissions(models.Model):
-    id              = models.UUIDField(primary_key=True, db_default=models.Func(function='uuidv7'))
-    user_account    = models.ForeignKey(UserAccount, db_column="user_account_id", on_delete=models.RESTRICT, related_name="user_permissions")
-    role            = models.ForeignKey(Roles, db_column="role_id", on_delete=models.RESTRICT, related_name="user_permissions")
-    is_active       = models.BooleanField()
-    created_at      = models.DateTimeField(db_default=Now())
-    updated_at      = models.DateTimeField(db_default=Now())
+class OrganizationRole(models.Model):
+    id              = models.UUIDField(
+                        primary_key=True, 
+                        db_default=models.Func(function='uuidv7')
+                    )
+    organization    = models.ForeignKey(
+                        Organization, 
+                        db_column="organization_id", 
+                        on_delete=models.RESTRICT, 
+                        related_name="organization_role"
+                    )
+    role            = models.ForeignKey(
+                        Role, 
+                        db_column="role_id", 
+                        on_delete=models.RESTRICT, 
+                        related_name="organization_role"
+                    )
+    is_active       = models.BooleanField(
+                        default=True, 
+                        db_default=True
+                    )
+    created_at      = models.DateTimeField(
+                        default=Now(),
+                        db_default=Now()
+                    )
+    updated_at      = models.DateTimeField(
+                        db_default=Now(), 
+                        auto_now=True
+                    )
 
-class GroupPermissions(models.Model):
-    id              = models.UUIDField(primary_key=True, db_default=models.Func(function='uuidv7'))
-    organization    = models.ForeignKey(Organization, db_column="organization_id", on_delete=models.RESTRICT, related_name="group_permissions")
-    role            = models.ForeignKey(Roles, db_column="role_id", on_delete=models.RESTRICT, related_name="group_permissions")
-    is_active       = models.BooleanField()
-    created_at      = models.DateTimeField(db_default=Now())
-    updated_at      = models.DateTimeField(db_default=Now())
+    class Meta:
+        db_table = "OrganizationRole"
