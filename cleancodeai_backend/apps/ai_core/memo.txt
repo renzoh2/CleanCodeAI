@@ -1,0 +1,81 @@
+# ─── Service Layer ───────────────────────────────────────────────────────────
+
+from django.db import transaction
+
+
+def get_conversation_history(conversation_id: str) -> list[dict]:
+    """
+    Returns the active message history for a conversation,
+    used as the payload sent to the LLM.
+    Only active iterations and visible messages are included.
+    """
+    messages = ConversationMessage.objects.filter(
+        conversation_id=conversation_id,
+        is_active_iteration=True,
+        is_visible=True,
+    ).order_by("sequence")
+
+    return [{"role": m.role, "content": m.content} for m in messages]
+
+
+def get_iterations_at_sequence(conversation_id: str, sequence: int):
+    """
+    Returns all iterations at a given sequence slot.
+    Used to power the left/right arrow UI for regenerated responses.
+    """
+    return ConversationMessage.objects.filter(
+        conversation_id=conversation_id,
+        sequence=sequence,
+    ).order_by("iteration")
+
+
+def regenerate_message(conversation_id: str, sequence: int, new_content: str) -> ConversationMessage:
+    """
+    Deactivates all current iterations at the given sequence slot,
+    then inserts a new iteration as the active one.
+    Wrapped in a transaction to prevent partial writes.
+    """
+    with transaction.atomic():
+        ConversationMessage.objects.filter(
+            conversation_id=conversation_id,
+            sequence=sequence,
+        ).update(is_active_iteration=False)
+
+        last_iteration = (
+            ConversationMessage.objects
+            .filter(conversation_id=conversation_id, sequence=sequence)
+            .order_by("-iteration")
+            .values_list("iteration", flat=True)
+            .first()
+        )
+
+        return ConversationMessage.objects.create(
+            conversation_id=conversation_id,
+            role=MessageRole.ASSISTANT,
+            content=new_content,
+            sequence=sequence,
+            iteration=last_iteration + 1,
+            is_active_iteration=True,
+        )
+
+
+def switch_iteration(conversation_id: str, sequence: int, target_iteration: int) -> ConversationMessage:
+    """
+    Switches the active iteration at a sequence slot to a specific iteration.
+    Used when the user clicks the left/right arrows to browse past responses.
+    """
+    with transaction.atomic():
+        ConversationMessage.objects.filter(
+            conversation_id=conversation_id,
+            sequence=sequence,
+        ).update(is_active_iteration=False)
+
+        message = ConversationMessage.objects.get(
+            conversation_id=conversation_id,
+            sequence=sequence,
+            iteration=target_iteration,
+        )
+        message.is_active_iteration = True
+        message.save(update_fields=["is_active_iteration", "updated_at"])
+
+        return message

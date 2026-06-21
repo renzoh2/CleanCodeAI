@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+#Load Environment Variables
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%dgi!s%+xh$=y-k(=+cx%2yp&t=kjt%5$j_o2miaofpqio^afb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 
 
 # Application definition
@@ -37,7 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'graphene_django',
+    'corsheaders'
 ]
+
+GRAPHENE = {
+    "SCHEMA": 'web_backend.schema.schema'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -47,7 +58,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'config.middleware.ProjectMiddleware'
 ]
+
+CORS_ALLOWED_ORIGINS = os.environ.get("ALLOWED_URLS", "").split(",")
 
 ROOT_URLCONF = 'config.urls'
 
@@ -74,12 +88,20 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.environ.get("DB_DEFAULT_ENGINE", "django.db.backends.sqlite"),
+        'NAME': os.environ.get("DB_DEFAULT_NAME", "db_name"),
+        'USER': os.environ.get("DB_DEFAULT_USERNAME", "username"),
+        'PASSWORD': os.environ.get("DB_DEFAULT_PASSWORD", "password"),
+        'HOST': os.environ.get("DB_DEFAULT_HOSTNAME", "localhost"),
+        'PORT': os.environ.get("DB_DEFAULT_ROOT", "5432"),
     },
-    'log_schema': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'log_default': {
+        'ENGINE': os.environ.get("DB_LOG_ENGINE", "django.db.backends.sqlite"),
+        'NAME': os.environ.get("DB_LOG_NAME", "db_name"),
+        'USER': os.environ.get("DB_LOG_USERNAME", "username"),
+        'PASSWORD': os.environ.get("DB_LOG_PASSWORD", "password"),
+        'HOST': os.environ.get("DB_LOG_HOSTNAME", "localhost"),
+        'PORT': os.environ.get("DB_LOG_ROOT", "5432"),
     }
 }
 
