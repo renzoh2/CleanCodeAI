@@ -1,4 +1,3 @@
-import type { Route } from "./+types/Login";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -14,26 +13,13 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 //Import Assets
 import imgGoogle from "/img/google.png";
 
-
-export function meta({}: Route.MetaArgs){
-    return [
-        {
-            title: "Clean Code AI"
-        },
-        {
-            name: "description",
-            content: "Landing page for Clean Code AI - Login",
-        }
-    ]
-}
-
 type AuthForm = {
     email: string | undefined;
     password: string | undefined;
 };
 
 const Login = () => {
-    const {register, handleSubmit, formState: { errors }} = useForm<AuthForm>();
+    const {register, handleSubmit} = useForm<AuthForm>();
 
     const [status, setStatus] = useState<string>("");
     const navigate = useNavigate();
