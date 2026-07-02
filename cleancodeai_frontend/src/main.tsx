@@ -8,7 +8,7 @@ import './index.css';
 import router from './router.tsx';
 
 const client = new ApolloClient({
-  link: new HttpLink({ uri: import.meta.env.VITE_BASE_FULL_URL }),
+  link: new HttpLink({ uri: import.meta.env.VITE_BASE_BACKEND_FULL_URL }),
   cache: new InMemoryCache(),
 });
 

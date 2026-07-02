@@ -6,14 +6,12 @@ import Blackboard from "~/pages/Blackboard";
 const router = createBrowserRouter([
   {
     path: "/",
-    Component: Login,
-    children: [
-      {
-        path: "blackboard",
-        Component: Blackboard
-      }
-    ]
+    Component: Login
   },
+  {
+    path: "/blackboard",
+    Component: Blackboard
+  }
 ]);
 
 export default router;
