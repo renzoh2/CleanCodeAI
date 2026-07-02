@@ -7,8 +7,11 @@ import { ApolloProvider } from "@apollo/client/react";
 import './index.css';
 import router from './router.tsx';
 
+const base = import.meta.env.VITE_BASE_BACKEND_FULL_URL;
+const alias = import.meta.env.VITE_BACKEND_GRAPHQL_ALIAS
+
 const client = new ApolloClient({
-  link: new HttpLink({ uri: import.meta.env.VITE_BASE_BACKEND_FULL_URL }),
+  link: new HttpLink({ uri: base+"/"+alias+"/" }),
   cache: new InMemoryCache(),
 });
 
