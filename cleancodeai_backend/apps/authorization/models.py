@@ -13,21 +13,21 @@ class ActionPermission(models.TextChoices):
 
 class Role(models.Model):
     id          = models.UUIDField(
-                    primary_key=True, 
-                    db_default=models.Func(function='uuidv7')
+                    primary_key =   True, 
+                    db_default  =   models.Func(function='uuidv7')
                 )
     name        = models.CharField(max_length=255)
     is_active   = models.BooleanField(
-                    default=True, 
-                    db_default=True
+                    default     =   True, 
+                    db_default  =   True
                 )
     created_at  = models.DateTimeField(
-                    default=Now(),
-                    db_default=Now()
+                    default     =   Now(),
+                    db_default  =   Now()
                 )
     updated_at  = models.DateTimeField(
-                    db_default=Now(), 
-                    auto_now=True
+                    db_default  =   Now(), 
+                    auto_now    =   True
                 )
     
     class Meta:
@@ -35,23 +35,23 @@ class Role(models.Model):
 
 class Permission(models.Model):
     id          = models.UUIDField(
-                    primary_key=True, 
-                    db_default=models.Func(function='uuidv7')
+                    primary_key =   True, 
+                    db_default  =   models.Func(function='uuidv7')
                 )
     name        = models.CharField(max_length=255)
     resource    = models.CharField(max_length=255)
     action      = models.CharField(
-                    max_length=255, 
-                    choices=ActionPermission.choices
+                    max_length  =   255, 
+                    choices     =   ActionPermission.choices
                 )
     is_active   = models.BooleanField(
-                    default=True, 
-                    db_default=True
+                    default     =   True, 
+                    db_default  =   True
                 )
     created_at  = models.DateTimeField(db_default=Now())
     updated_at  = models.DateTimeField(
-                    db_default=Now(), 
-                    auto_now=True
+                    db_default  =   Now(), 
+                    auto_now    =   True
                 )
     
     class Meta:
@@ -59,32 +59,32 @@ class Permission(models.Model):
 
 class RolePermission(models.Model):
     id          = models.UUIDField(
-                    primary_key=True, 
-                    db_default=models.Func(function='uuidv7')
+                    primary_key =   True, 
+                    db_default  =   models.Func(function='uuidv7')
                 )
     role        = models.ForeignKey(
                     Role, 
-                    db_column="role_id", 
-                    on_delete=models.RESTRICT, 
-                    related_name="role_permission"
+                    db_column   =   "role_id", 
+                    on_delete   =   models.RESTRICT, 
+                    related_name=   "role_permission"
                 )
     permission  = models.ForeignKey(
                     Permission, 
-                    db_column="permission_id", 
-                    on_delete=models.RESTRICT, 
-                    related_name="role_permission"
+                    db_column   =   "permission_id", 
+                    on_delete   =   models.RESTRICT, 
+                    related_name=   "role_permission"
                 )
     is_active   = models.BooleanField(
-                    default=True, 
-                    db_default=True
+                    default     =   True, 
+                    db_default  =   True
                 )
     created_at  = models.DateTimeField(
-                    default=Now(),
-                    db_default=Now()
+                    default     =   Now(),
+                    db_default  =   Now()
                 )
     updated_at  = models.DateTimeField(
-                    db_default=Now(), 
-                    auto_now=True
+                    db_default  =   Now(), 
+                    auto_now    =   True
                 )
     
     class Meta:
@@ -94,32 +94,32 @@ class RolePermission(models.Model):
 
 class UserRole(models.Model):
     id              = models.UUIDField(
-                        primary_key=True, 
-                        db_default=models.Func(function='uuidv7')
+                        primary_key =   True, 
+                        db_default  =   models.Func(function='uuidv7')
                     )
     user_account    = models.ForeignKey(
                         UserAccount, 
-                        db_column="user_account_id", 
-                        on_delete=models.RESTRICT, 
-                        related_name="user_role"
+                        db_column   =   "user_account_id", 
+                        on_delete   =   models.RESTRICT, 
+                        related_name=   "user_role"
                     )
     role            = models.ForeignKey(
                         Role, 
-                        db_column="role_id", 
-                        on_delete=models.RESTRICT, 
-                        related_name="user_role"
+                        db_column   =   "role_id", 
+                        on_delete   =   models.RESTRICT, 
+                        related_name=   "user_role"
                     )
     is_active       = models.BooleanField(
-                        default=True, 
-                        db_default=True
+                        default     =   True, 
+                        db_default  =   True
                     )
     created_at      = models.DateTimeField(
-                        default=Now(),
-                        db_default=Now()
+                        default     =   Now(),
+                        db_default  =   Now()
                     )
     updated_at      = models.DateTimeField(
-                        db_default=Now(), 
-                        auto_now=True
+                        db_default  =   Now(), 
+                        auto_now    =   True
                     )
     
     class Meta:
@@ -127,32 +127,32 @@ class UserRole(models.Model):
 
 class OrganizationRole(models.Model):
     id              = models.UUIDField(
-                        primary_key=True, 
-                        db_default=models.Func(function='uuidv7')
+                        primary_key =   True, 
+                        db_default  =   models.Func(function='uuidv7')
                     )
     organization    = models.ForeignKey(
                         Organization, 
-                        db_column="organization_id", 
-                        on_delete=models.RESTRICT, 
-                        related_name="organization_role"
+                        db_column   =   "organization_id", 
+                        on_delete   =   models.RESTRICT, 
+                        related_name=   "organization_role"
                     )
     role            = models.ForeignKey(
                         Role, 
-                        db_column="role_id", 
-                        on_delete=models.RESTRICT, 
-                        related_name="organization_role"
+                        db_column   =   "role_id", 
+                        on_delete   =   models.RESTRICT, 
+                        related_name=   "organization_role"
                     )
     is_active       = models.BooleanField(
-                        default=True, 
-                        db_default=True
+                        default     =   True, 
+                        db_default  =   True
                     )
     created_at      = models.DateTimeField(
-                        default=Now(),
-                        db_default=Now()
+                        default     =   Now(),
+                        db_default  =   Now()
                     )
     updated_at      = models.DateTimeField(
-                        db_default=Now(), 
-                        auto_now=True
+                        db_default  =   Now(), 
+                        auto_now    =   True
                     )
 
     class Meta:

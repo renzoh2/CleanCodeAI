@@ -3,8 +3,8 @@ from django.db.models.functions import Now
 
 class AuditLog(models.Model):
     id          = models.UUIDField(
-                    primary_key=True, 
-                    db_default=models.Func(function='uuidv7')
+                    primary_key =   True, 
+                    db_default  =   models.Func(function='uuidv7')
                 )
     profile_id  = models.UUIDField()
     action      = models.CharField(max_length=255)
@@ -19,8 +19,8 @@ class AuditLog(models.Model):
 
 class AccessLog(models.Model):
     id                  = models.UUIDField(
-                            primary_key=True, 
-                            db_default=models.Func(function='uuidv7')
+                            primary_key =   True, 
+                            db_default  =   models.Func(function='uuidv7')
                         )
     user_account_id     = models.UUIDField()
     session_id          = models.UUIDField()

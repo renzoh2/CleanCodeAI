@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'graphene_django',
     'corsheaders',
-    'apps.userprofile',
+    'apps.user_profile',
     'apps.organization',
     'apps.audit',
     'apps.authentication',
@@ -61,6 +61,7 @@ GRAPHENE = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware", 
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -103,7 +104,15 @@ DATABASES = {
         'HOST': os.environ.get("DB_DEFAULT_HOSTNAME", "localhost"),
         'PORT': os.environ.get("DB_DEFAULT_ROOT", "5432"),
     },
-    'log_default': {
+    'main': {
+        'ENGINE': os.environ.get("DB_MAIN_ENGINE", "django.db.backends.sqlite"),
+        'NAME': os.environ.get("DB_MAIN_NAME", "db_name"),
+        'USER': os.environ.get("DB_MAIN_USERNAME", "username"),
+        'PASSWORD': os.environ.get("DB_MAIN_PASSWORD", "password"),
+        'HOST': os.environ.get("DB_MAIN_HOSTNAME", "localhost"),
+        'PORT': os.environ.get("DB_MAIN_ROOT", "5432"),
+    },
+    'logs': {
         'ENGINE': os.environ.get("DB_LOG_ENGINE", "django.db.backends.sqlite"),
         'NAME': os.environ.get("DB_LOG_NAME", "db_name"),
         'USER': os.environ.get("DB_LOG_USERNAME", "username"),
